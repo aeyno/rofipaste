@@ -228,16 +228,14 @@ def copy_paste_characters(characters: str, active_window: str) -> None:
 
 
 def type_characters(characters: str, active_window: str) -> None:
-    #In order to type the characters using xdotool, we need to get the actual keyboard layout of the user
-    # TODO: use "setxkbmap -query | grep layout" to get the layout of the current user
-    t = run(['setxkbmap', 'fr'], stdout=PIPE)
+    '''Type the string characters on the current window'''
     run([
         'xdotool',
         'type',
         '--window',
         active_window,
         characters
-    ], input=t.stdout)
+    ], encoding="utf-8")
 
 
 def copy_characters_to_clipboard(characters: str) -> None:
