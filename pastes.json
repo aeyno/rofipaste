@@ -8,5 +8,10 @@
         "name": "Date",
         "type": "command",
         "value" : "date +%d/%m/%Y_%H:%M:%S"
+    },
+    {
+        "name": "ExampleDirectory",
+        "type": "directory",
+        "content": []
     }
 ]

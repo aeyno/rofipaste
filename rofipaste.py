@@ -25,7 +25,10 @@ def loadConfig(configFile):
 def getThingsToPaste() -> str:
     params = [":edit"]
     for x in thingsToPaste:
-        params.append(x["name"])
+        if x["type"] == "directory":
+            params.append("📂"+x["name"])
+        else:
+            params.append(x["name"])
     return "\n".join(params)
 
 
@@ -37,7 +40,10 @@ def commandInterpreter(command):
     else:
         for x in thingsToPaste:
             if x["name"] == command:
-                if x["type"] == "text":
+                if x["type"] == "directory":
+                    # TODO: Launch rofi again with the content of the folder
+                    pass
+                elif x["type"] == "text":
                     return x["value"]
                 elif x["type"] == "command":
                     #TODO : regex to parse spaces in the command
