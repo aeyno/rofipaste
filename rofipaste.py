@@ -8,18 +8,19 @@ import sys
 import json
 from subprocess import run, PIPE
 from typing import List, Tuple
-
 import configargparse
 from xdg import BaseDirectory
 
 
 thingsToPaste = []
 
+
 def loadConfig(configFile):
     global thingsToPaste
     pastesFile = open("./pastes.json")
     thingsToPaste = json.loads(pastesFile.read())
     pastesFile.close()
+
 
 def getThingsToPaste() -> str:
     params = [":edit"]
@@ -44,6 +45,7 @@ def commandInterpreter(command):
                     print(cmd.stdout)
                     return cmd.stdout
 
+
 def editConfig(configFile):
     run(args=['vim', configFile,], encoding='utf-8')
     try:
@@ -51,6 +53,7 @@ def editConfig(configFile):
         print("Changes saved !")
     except:
         print("Something is wrong with your file !")
+
 
 def main() -> None:
     loadConfig("./pastes.json")
@@ -70,7 +73,7 @@ def main() -> None:
     else:
         if 10 <= returncode <= 19:
             pass
-
+            # TODO: create shortcuts with 0-9 keys
             #default_handle_recent_character(returncode - 9, args, active_window)
         else:
             cmd = stdout.splitlines()[0]
@@ -201,7 +204,6 @@ def default_handle(characters: str, args: argparse.Namespace, active_window: str
         type_characters(characters, active_window)
 
 
-
 def copy_paste_characters(characters: str, active_window: str) -> None:
     old_clipboard_content = run(args=['xsel', '-o', '-b'], capture_output=True).stdout
     old_primary_content = run(args=['xsel', '-o', '-p'], capture_output=True).stdout
@@ -227,7 +229,7 @@ def copy_paste_characters(characters: str, active_window: str) -> None:
 
 def type_characters(characters: str, active_window: str) -> None:
     #In order to type the characters using xdotool, we need to get the actual keyboard layout of the user
-    # TODO: use "setxkbmap -query | grep layout" to get the layout
+    # TODO: use "setxkbmap -query | grep layout" to get the layout of the current user
     t = run(['setxkbmap', 'fr'], stdout=PIPE)
     run([
         'xdotool',
