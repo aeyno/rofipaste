@@ -1,0 +1,12 @@
+[
+    {
+        "name": "test1",
+        "type": "text",
+        "value" : "une valeur"
+    },
+    {
+        "name": "Date",
+        "type": "command",
+        "value" : "date +%d/%m/%Y_%H:%M:%S"
+    }
+]
