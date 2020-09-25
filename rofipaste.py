@@ -6,7 +6,7 @@ import os
 import shlex
 import sys
 import json
-from subprocess import run
+from subprocess import run, PIPE
 from typing import List, Tuple
 
 import configargparse
@@ -37,11 +37,10 @@ def commandInterpreter(command):
         for x in thingsToPaste:
             if x["name"] == command:
                 if x["type"] == "text":
-                    print(x["value"])
                     return x["value"]
                 elif x["type"] == "command":
-                    print(x["value"].split(" "))
-                    cmd = run(['date', "+%d/%m/%Y %H:%M:%S"],capture_output=True,encoding='utf-8')
+                    #TODO : regex to parse spaces in the command
+                    cmd = run(x["value"].split(" "),capture_output=True,encoding='utf-8')
                     print(cmd.stdout)
                     return cmd.stdout
 
@@ -227,13 +226,16 @@ def copy_paste_characters(characters: str, active_window: str) -> None:
 
 
 def type_characters(characters: str, active_window: str) -> None:
+    #In order to type the characters using xdotool, we need to get the actual keyboard layout of the user
+    # TODO: use "setxkbmap -query | grep layout" to get the layout
+    t = run(['setxkbmap', 'fr'], stdout=PIPE)
     run([
         'xdotool',
         'type',
         '--window',
         active_window,
         characters
-    ])
+    ], input=t.stdout)
 
 
 def copy_characters_to_clipboard(characters: str) -> None:
