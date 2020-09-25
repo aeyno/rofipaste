@@ -22,9 +22,9 @@ def loadConfig(configFile):
     pastesFile.close()
 
 
-def getThingsToPaste() -> str:
+def getThingsToPaste(commandList) -> str:
     params = [":edit"]
-    for x in thingsToPaste:
+    for x in commandList:
         if x["type"] == "directory":
             params.append("📂"+x["name"])
         else:
@@ -62,6 +62,7 @@ def editConfig(configFile):
 
 
 def main() -> None:
+    global thingsToPaste
     loadConfig("./pastes.json")
     args = parse_arguments()
     active_window = get_active_window()
@@ -69,7 +70,7 @@ def main() -> None:
     returncode, stdout = open_main_rofi_window(
         args.rofi_args,
         #read_character_files(args.files),
-        getThingsToPaste(),
+        getThingsToPaste(thingsToPaste),
         args.prompt,
         args.max_recent
     )
