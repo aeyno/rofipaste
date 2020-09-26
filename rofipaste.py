@@ -46,6 +46,9 @@ def fileInterpreter(path):
 def main() -> None:
     args = parse_arguments()
     active_window = get_active_window()
+    if args.files[-1] == "/":
+        #Removing / at the end to avoid base_folder different from current_folder when going back to top folder
+        args.files = args.files[:-1]
     base_folder = args.files
     current_folder = base_folder
 
