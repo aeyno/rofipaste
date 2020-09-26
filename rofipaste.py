@@ -34,7 +34,6 @@ def fileInterpreter(path):
     fileExt = path.split(".")[-1]
     print(fileExt)
     if fileExt == "sh":
-        #TODO : regex to parse spaces in the command
         cmd = run(["bash", path],capture_output=True,encoding='utf-8')
         return cmd.stdout
     else:
@@ -47,12 +46,10 @@ def fileInterpreter(path):
 def main() -> None:
     args = parse_arguments()
     active_window = get_active_window()
-    
-    #base_folder = os.path.join(BaseDirectory.xdg_data_home, 'rofipaste',args['files'])
-    #current_folder = os.path.join(BaseDirectory.xdg_data_home, 'rofipaste',args['files'])
-
-    base_folder = "./pastes_folder"
+    base_folder = args.files
     current_folder = base_folder
+
+    print(base_folder)
 
     while True:
         folder_content = read_folder_content(current_folder)
@@ -123,10 +120,9 @@ def parse_arguments() -> argparse.Namespace:
         '-f',
         dest='files',
         action='store',
-        default='pastes_folder',
-        nargs='+',
+        default= os.path.join(BaseDirectory.xdg_data_home, 'rofipaste/pastes_folder'),
         metavar='FILE',
-        help='Read characters from this file instead, one entry per line'
+        help='Read pastes from this directory'
     )
     parser.add_argument(
         '--prompt',
