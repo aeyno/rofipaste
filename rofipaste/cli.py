@@ -6,7 +6,7 @@ import click
 import click_config_file
 from rofipaste import rofipaste
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 
 @click.command()
