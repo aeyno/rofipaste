@@ -1,0 +1,14 @@
+pyxdg==0.26
+bump2version==0.5.11
+wheel==0.33.6
+watchdog==0.9.0
+pylint==2.6.0
+tox==3.14.0
+coverage==4.5.4
+Sphinx==1.8.5
+twine==1.14.0
+Click==7.0
+click-config-file==0.6.0
+pytest==4.6.5
+pytest-mypy==0.7.0
+pytest-runner==5.1
