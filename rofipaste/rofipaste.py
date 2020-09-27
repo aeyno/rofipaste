@@ -1,7 +1,7 @@
 """Main module."""
 
 import os
-from subprocess import run
+from subprocess import run, CompletedProcess
 
 from enum import Enum, auto
 
@@ -12,6 +12,7 @@ import click
 folder_icon: str = ""
 paste_icon: str = ""
 undo_icon: str = ""
+executable_icon: str = ""
 
 
 class Action(Enum):
@@ -31,15 +32,22 @@ def read_folder_content(folder_path: str) -> str:
     """
 
     file_entries: str = ''
+    exec_entries: str = ''
     dir_entries: str = ''
 
     for f in os.listdir(folder_path):
-        if os.path.isfile(os.path.join(folder_path, f)):
-            file_entries += f'{paste_icon} {f}\n'
+        filename = os.path.join(folder_path, f)
+        if os.path.isfile(filename):
+            with open(filename, 'r') as file_:
+                firstline = file_.readline()
+            if firstline[:2] == "#!":
+                exec_entries += f'{executable_icon} {f}\n'
+            else:
+                file_entries += f'{paste_icon} {f}\n'
         else:
             dir_entries += f'{folder_icon} {f}\n'
 
-    return file_entries + dir_entries
+    return file_entries + exec_entries + dir_entries
 
 
 def fileInterpreter(path: str) -> str:
@@ -52,18 +60,17 @@ def fileInterpreter(path: str) -> str:
     :rtype: str
     """
 
-    # TODO: Use the shebang of the file -> If there is one then execute the file with the specified interpreter
-
-    fileExt: str = path.split(".")[-1]
-    click.echo(fileExt)
-    if fileExt == "sh":
-        cmd = run(["bash", path], capture_output=True, encoding='utf-8')
-        return cmd.stdout
-    else:
-        f = open(path, 'r')
+    with open(path, 'r') as f:
         content: str = f.read()
-        f.close()
-        return content
+
+    if content[:2] == "#!":
+        shebang: str = content.split('\n')[0]
+        output: str = run([shebang[2:], path],
+                          capture_output=True,
+                          encoding='utf-8').stdout
+        return output
+
+    return content
 
 
 def get_active_window() -> str:
@@ -91,10 +98,11 @@ def open_main_rofi_window(rofi_args: List[str], characters: str, prompt: str,
 
     parameters.extend(['-mesg', "Type :edit to edit your config file"])
 
-    rofi = run(parameters,
-               input=characters,
-               capture_output=True,
-               encoding='utf-8')
+    rofi: CompletedProcess = run(parameters,
+                                 input=characters,
+                                 capture_output=True,
+                                 encoding='utf-8')
+
     return rofi.returncode, rofi.stdout
 
 
@@ -146,8 +154,8 @@ def copy_paste_characters(characters: str, active_window: str) -> None:
     :rtype: None
     """
 
-    old_clipboard_content: str = run(args=['xsel', '-o', '-b'],
-                                     capture_output=True).stdout.decode("utf-8")
+    old_clipboard_content: str = run(
+        args=['xsel', '-o', '-b'], capture_output=True).stdout.decode("utf-8")
     old_primary_content: str = run(args=['xsel', '-o', '-p'],
                                    capture_output=True).stdout.decode("utf-8")
 

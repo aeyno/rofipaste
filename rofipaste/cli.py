@@ -49,30 +49,16 @@ __version__ = '0.1.1'
     BaseDirectory.xdg_config_home, 'rofipaste/config'))
 def main(version: bool, insert_with_clipboard: bool, copy_only: bool,
          files: str, prompt: str, rofi_args: str, max_recent: int) -> int:
-    """main.
-
-    :param version: If this is true, print the current version
-    :type version: bool
-    :param insert_with_clipboard: if this is true, do not type the character directly, but cpoy it to the clipboard, insert it from there and then restore the clipboard's original value
-    :type insert_with_clipboard: bool
-    :param copy_only: If this is true, only copy the characters to the clipboard but do not insert it
-    :type copy_only: bool
-    :param files: Reaad pastes from this directory
-    :type files: str
-    :param prompt: Set rofipaste's prompt
-    :type prompt: str
-    :param rofi_args: A string of arguments to give to rofi
-    :type rofi_args: str
-    :param max_recent: Show at most this number of recently user characters (cannot be larger than 10)
-    :type max_recent: int
-    :rtype: int
+    """
+    RofiPaste is a tool allowing you to copy / paste pieces of codes or other useful texts
     """
 
     if version:
         click.echo(f"Current version: {__version__}")
         return 0
 
-    filesPath: str = os.path.join(BaseDirectory.xdg_data_home, 'rofipaste', files)
+    filesPath: str = os.path.join(BaseDirectory.xdg_data_home, 'rofipaste',
+                                  files)
 
     Action = rofipaste.Action
     action = {
@@ -87,8 +73,6 @@ def main(version: bool, insert_with_clipboard: bool, copy_only: bool,
         filesPath = filesPath[:-1]
     base_folder = filesPath
     current_folder = base_folder
-
-    click.echo(base_folder)
 
     while True:
         folder_content = rofipaste.read_folder_content(current_folder)
@@ -110,7 +94,7 @@ def main(version: bool, insert_with_clipboard: bool, copy_only: bool,
             current_folder = path
         elif icon == rofipaste.undo_icon:
             current_folder = os.path.dirname(current_folder)
-        elif icon == rofipaste.paste_icon:
+        elif icon in (rofipaste.paste_icon, rofipaste.executable_icon):
             if 10 <= returncode <= 19:
                 # TODO: create shortcuts with 0-9 keys
                 #default_handle_recent_character(returncode - 9,  active_window)
