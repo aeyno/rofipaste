@@ -9,7 +9,7 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['Click>=7.0', 'click_config_file', 'pyxdg']
+requirements = ['Click>=7.0', 'click_config_file>=0.6.0', 'pyxdg>=0.26']
 
 setup_requirements = [
     'pytest-runner',
