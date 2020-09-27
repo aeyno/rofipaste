@@ -20,7 +20,7 @@ deploy:
   distributions: sdist bdist_wheel
   user: Any0ne22
   password:
-    secure: PLEASE_REPLACE_ME
+    secure: 3hHPzrdM4FolUnNUINTSUIr5E8OrwLGBtHdwC25JrdjMUqU/orFazkwGM/MP9fGZT3xnt/4kqmDP3wzSgCYvX+MyWFda73WtS3l08i62FH0jvRZ02zUkXBnFp7zu4dgF70XRHcqswTliw1Pjppdj3T/9lE2G/E3FpENtBx+ItixG4TGU7rdnUeRRUumP06lrwnq6kAjd6wVajnFnDkKbS8zkL/yDD7gkjbt+9rXPRb+3kYyGKAJ3WlK2JfEUTutrGnEXMZs4MyNre4gYym+kARfeHsSy8uHcAXWLhlMTBEdgR/xmIZ78D0Uum2mQ6EAH09JjrkB1yUsVynYuMRqJH2vLZcM5C5r1P1FHcvWtOUTN3LkLHQuyt+wJs9csz6ZOaiuEEgKLItQw+GE5WyXai3dzDV5LzjdFsnyOjqUfEdOy3NW1mz7xPDmp+WxBdQtB+/t+bHRUCHgUB2MH050udullDsjj80lFxFDq0FzubR/eTti5J0ofvGM3u5Rj8pzry3Y6i4EU8qzzXlLbXJ3onDGcb7mtJ6n/rD21YgkM4zZWNuAwzjV+cH6F9GN2u6LB9fKTtTJF6H/zusb3LutmjXoROpHoQX81ZNEoXWwfmsD3NuU2WkKmvlRckwAGlEoR0qinHEaiaHrUXAZ4OJHM630P5aaDLm4QyCKJjlJbb48=
   on:
     tags: true
     repo: Any0ne22/rofipaste
