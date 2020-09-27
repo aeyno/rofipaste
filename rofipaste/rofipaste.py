@@ -147,9 +147,9 @@ def copy_paste_characters(characters: str, active_window: str) -> None:
     """
 
     old_clipboard_content: str = run(args=['xsel', '-o', '-b'],
-                                     capture_output=True).stdout
+                                     capture_output=True).stdout.decode("utf-8")
     old_primary_content: str = run(args=['xsel', '-o', '-p'],
-                                   capture_output=True).stdout
+                                   capture_output=True).stdout.decode("utf-8")
 
     run(args=['xsel', '-i', '-b'], input=characters, encoding='utf-8')
     run(args=['xsel', '-i', '-p'], input=characters, encoding='utf-8')
