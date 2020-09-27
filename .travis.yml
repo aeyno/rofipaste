@@ -23,5 +23,5 @@ deploy:
     secure: PLEASE_REPLACE_ME
   on:
     tags: true
-    repo: Any0ne22/rofipaste
+    repo: github/Any0ne22/rofipaste
     python: 3.8
