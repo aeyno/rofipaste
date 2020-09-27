@@ -31,10 +31,15 @@ Features
 --------
 
 * TODO
+
   - Edit CONTRIBUTING.rst if necessary
+
   - Edit HISTORY.rst if necessary
+  
   - Create requirements.txt (and use it instead of requirements_dev.txt for the installation)
+  
   - Create tests
+  
   - Write documentation
 
 
