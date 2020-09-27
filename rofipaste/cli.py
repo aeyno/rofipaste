@@ -4,7 +4,7 @@ import os
 from xdg import BaseDirectory
 import click
 import click_config_file
-import rofipaste
+from rofipaste import rofipaste
 
 __version__ = '0.1.0'
 
