@@ -72,7 +72,7 @@ def main(version: bool, insert_with_clipboard: bool, copy_only: bool,
         click.echo(f"Current version: {__version__}")
         return 0
 
-    files: str = os.path.join(BaseDirectory.xdg_data_home, 'rofipaste', files)
+    filesPath: str = os.path.join(BaseDirectory.xdg_data_home, 'rofipaste', files)
 
     Action = rofipaste.Action
     action = {
@@ -82,10 +82,10 @@ def main(version: bool, insert_with_clipboard: bool, copy_only: bool,
     }[True]
 
     active_window = rofipaste.get_active_window()
-    if files[-1] == "/":
+    if filesPath[-1] == "/":
         #Removing / at the end to avoid base_folder different from current_folder when going back to top folder
-        files = files[:-1]
-    base_folder = files
+        filesPath = filesPath[:-1]
+    base_folder = filesPath
     current_folder = base_folder
 
     click.echo(base_folder)
@@ -114,7 +114,7 @@ def main(version: bool, insert_with_clipboard: bool, copy_only: bool,
             if 10 <= returncode <= 19:
                 # TODO: create shortcuts with 0-9 keys
                 #default_handle_recent_character(returncode - 9,  active_window)
-                return
+                return 0
             else:
                 data = rofipaste.fileInterpreter(path)
                 if returncode == 0:
@@ -125,7 +125,7 @@ def main(version: bool, insert_with_clipboard: bool, copy_only: bool,
                     rofipaste.type_characters(data, active_window)
                 elif returncode == 22:
                     rofipaste.copy_paste_characters(data, active_window)
-                return
+                return 0
 
     return 0
 
