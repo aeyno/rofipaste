@@ -97,7 +97,7 @@ def main(version: bool, insert_with_clipboard: bool, copy_only: bool,
             folder_content = f'{rofipaste.undo_icon} ..\n' + folder_content
 
         returncode, stdout = rofipaste.open_main_rofi_window(
-            rofi_args, folder_content, prompt, max_recent)
+            rofi_args.split(" "), folder_content, prompt, max_recent)
 
         if returncode == 1:
             return 0
