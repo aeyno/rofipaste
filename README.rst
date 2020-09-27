@@ -7,7 +7,7 @@ RofiPaste
         :target: https://pypi.python.org/pypi/rofipaste
 
 .. image:: https://img.shields.io/travis/Any0ne22/rofipaste.svg
-        :target: https://travis-ci.com/Any0ne22/rofipaste
+        :target: https://travis-ci.com/github/Any0ne22/rofipaste
 
 .. image:: https://readthedocs.org/projects/rofipaste/badge/?version=latest
         :target: https://rofipaste.readthedocs.io/en/latest/?badge=latest
