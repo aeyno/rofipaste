@@ -1,25 +1,29 @@
 .. highlight:: shell
 
-# Installation
+Installation
+============
 
-
-## Dependencies
+Dependencies
+------------
 
 RofiPaste depends on `rofi`_ and `FontAwesome`_ 
 
 .. _rofi: https://github.com/davatorium/rofi
 .. _FontAwesome: https://fontawesome.com/
 
-### Install dependencies
+Installing dependencies
+-----------------------
 
-#### Debian / Ubuntu / Linux Mint / Elementary
+Debian / Ubuntu / Linux Mint / Elementary
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: console
 
     $ sudo apt-get install rofi
 
 
-#### Arch / Manjaro
+Arch / Manjaro
+~~~~~~~~~~~~~~
 
 .. code-block:: console
 
@@ -29,7 +33,8 @@ RofiPaste depends on `rofi`_ and `FontAwesome`_
     $ makepkg -si
 
 
-#### Fedora
+Fedora
+~~~~~~
 
 .. code-block:: console
 
@@ -37,7 +42,8 @@ RofiPaste depends on `rofi`_ and `FontAwesome`_
 
 
 
-## Stable release
+Stable release
+--------------
 
 To install RofiPaste, run this command in your terminal:
 
@@ -54,7 +60,8 @@ you through the process.
 .. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
 
 
-## From sources
+From sources
+------------
 
 The sources for RofiPaste can be downloaded from the `Github repo`_.
 
