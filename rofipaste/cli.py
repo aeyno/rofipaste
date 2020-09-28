@@ -126,12 +126,20 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
 
         elif icon == rofipaste.undo_icon:
             current_folder = os.path.dirname(current_folder)
-
+        
         elif icon == rofipaste.edit_config_icon:
             click.launch(config_file_name)
             return 0
 
-        elif icon in (rofipaste.paste_icon, rofipaste.executable_icon):
+        elif icon in rofipaste.paste_icon_dict.values():
+            path = path.rstrip(' (exec)')
+
+            path += '.' + {y: x
+                           for x, y in rofipaste.paste_icon_dict.items()}[icon]
+
+            if path[-1] == '.':
+                path = path[:-1]
+
             if 10 <= returncode <= 19:
                 # TODO: create shortcuts with 0-9 keys
                 #default_handle_recent_character(returncode - 9,  active_window)
