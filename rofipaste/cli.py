@@ -6,10 +6,18 @@ import click
 import click_config_file
 from rofipaste import rofipaste
 
-__version__ = '0.1.2'
+__version__: str = '0.1.2'
+
+config_file_name: str = os.path.join(BaseDirectory.xdg_config_home,
+                                     'rofipaste/config')
 
 
 @click.command()
+@click.option(
+    '--edit-config',
+    default=False,
+    help='Open your default terminal editor to edit your config file',
+    is_flag=True)
 @click.option('--version',
               default=False,
               help='Print the current version',
@@ -45,14 +53,17 @@ __version__ = '0.1.2'
     help=
     'Show at most this number of recently used characters (cannot be larger than 10)'
 )
-@click_config_file.configuration_option(config_file_name=os.path.join(
-    BaseDirectory.xdg_config_home, 'rofipaste/config'))
-def main(version: bool, insert_with_clipboard: bool, copy_only: bool,
-         files: str, prompt: str, rofi_args: str, max_recent: int) -> int:
+@click_config_file.configuration_option(config_file_name=config_file_name)
+def main(edit_config: bool, version: bool, insert_with_clipboard: bool,
+         copy_only: bool, files: str, prompt: str, rofi_args: str,
+         max_recent: int) -> int:
     """
     RofiPaste is a tool allowing you to copy / paste pieces of codes or other useful texts
     """
 
+    if edit_config:
+        click.edit(filename=config_file_name)
+        return 0
     if version:
         click.echo(f"Current version: {__version__}")
         return 0
@@ -92,8 +103,14 @@ def main(version: bool, insert_with_clipboard: bool, copy_only: bool,
 
         if icon == rofipaste.folder_icon:
             current_folder = path
+
         elif icon == rofipaste.undo_icon:
             current_folder = os.path.dirname(current_folder)
+
+        elif icon == rofipaste.edit_config_icon:
+            click.launch(config_file_name)
+            return 0
+
         elif icon in (rofipaste.paste_icon, rofipaste.executable_icon):
             if 10 <= returncode <= 19:
                 # TODO: create shortcuts with 0-9 keys

@@ -13,6 +13,7 @@ folder_icon: str = ""
 paste_icon: str = ""
 undo_icon: str = ""
 executable_icon: str = ""
+edit_config_icon: str = ""
 
 
 class Action(Enum):
@@ -47,7 +48,8 @@ def read_folder_content(folder_path: str) -> str:
         else:
             dir_entries += f'{folder_icon} {f}\n'
 
-    return file_entries + exec_entries + dir_entries
+    return (file_entries + exec_entries + dir_entries +
+            f"{edit_config_icon} Edit configuration file\n")
 
 
 def fileInterpreter(path: str) -> str:
