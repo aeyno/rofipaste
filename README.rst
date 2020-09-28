@@ -20,15 +20,21 @@ RofiPaste
 
 
 
-A tool to paste some useful things
+A tool to paste some useful things using rofi (rofi needs to be installed to use this package)
 
 
 * Free software: GNU General Public License v3
 * Documentation: https://rofipaste.readthedocs.io.
 
-
 Features
 --------
+
+- You can paste all the entries you have created
+
+- You can create new entries
+
+- You can create executable entries
+
 
 * TODO
 
@@ -50,3 +56,7 @@ This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypack
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+
+This package was inspired and developed from the rofimoji_ project.
+
+.. _rofimoji: https://github.com/fdw/rofimoji
