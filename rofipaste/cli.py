@@ -7,7 +7,7 @@ import click_config_file
 from pathlib import Path
 from rofipaste import rofipaste
 
-__version__: str = '__version__ = '0.1.3''
+__version__: str = '0.1.3'
 
 config_file_name: str = os.path.join(BaseDirectory.xdg_config_home,
                                      'rofipaste/config')
