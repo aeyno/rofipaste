@@ -6,7 +6,7 @@ RofiPaste
 .. image:: https://img.shields.io/pypi/v/rofipaste.svg
         :target: https://pypi.python.org/pypi/rofipaste
 
-.. image:: https://img.shields.io/travis/Any0ne22/rofipaste.svg
+.. image:: https://img.shields.io/travis/com/Any0ne22/rofipaste.svg
         :target: https://travis-ci.com/github/Any0ne22/rofipaste
 
 .. image:: https://readthedocs.org/projects/rofipaste/badge/?version=latest
