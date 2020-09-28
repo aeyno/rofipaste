@@ -13,6 +13,13 @@ config_file_name: str = os.path.join(BaseDirectory.xdg_config_home,
                                      'rofipaste/config')
 
 
+def createIfNotExist(path):
+    """
+    Create a directory if it doesn't exists
+    """
+    Path(path).mkdir(parents=True, exist_ok=True)
+
+
 @click.command()
 @click.option('--version',
               default=False,
@@ -62,15 +69,9 @@ config_file_name: str = os.path.join(BaseDirectory.xdg_config_home,
 )
 @click_config_file.configuration_option(config_file_name=os.path.join(
     BaseDirectory.xdg_config_home, 'rofipaste/config'))
-
-def createIfNotExist(path):
-    """
-    Create a directory if it doesn't exists
-    """
-    Path(path).mkdir(parents=True, exist_ok=True)
-
-def main(version: bool, insert_with_clipboard: bool, copy_only: bool,
-         files: str, prompt: str, rofi_args: str, max_recent: int) -> int:
+def main(version: bool, edit_config: bool, edit_entry: bool,
+         insert_with_clipboard: bool, copy_only: bool, files: str, prompt: str,
+         rofi_args: str, max_recent: int) -> int:
     """
     RofiPaste is a tool allowing you to copy / paste pieces of codes or other useful texts
     """
@@ -136,7 +137,7 @@ def main(version: bool, insert_with_clipboard: bool, copy_only: bool,
 
         elif icon == rofipaste.undo_icon:
             current_folder = os.path.dirname(current_folder)
-        
+
         elif icon == rofipaste.edit_config_icon:
             click.launch(config_file_name)
             return 0
