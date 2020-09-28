@@ -5,21 +5,28 @@ from subprocess import run, CompletedProcess
 
 from enum import Enum, auto
 
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 
 import click
 
 folder_icon: str = ""
-paste_icon: str = ""
 undo_icon: str = ""
-executable_icon: str = ""
+edit_config_icon: str = ""
+paste_icon_dict: Dict[str, str] = dict(py="",
+                                       js="",
+                                       java="",
+                                       html="",
+                                       css="",
+                                       c="C",
+                                       cpp="C++",
+                                       sh="")
+paste_icon_dict[''] = ''
 
 
 class Action(Enum):
     COPY_ONLY = auto()
     INSERT_WITH_CLIPBOARD = auto()
     TYPE = auto()
-
 
 def read_folder_content(folder_path: str) -> str:
     """read_folder_content.
@@ -40,14 +47,26 @@ def read_folder_content(folder_path: str) -> str:
         if os.path.isfile(filename):
             with open(filename, 'r') as file_:
                 firstline = file_.readline()
+            extension = '.'.join(f.split('.')[1:])
+
+            try:
+                icon = paste_icon_dict[extension]
+                entry_name = f.split('.')[0]
+            except:
+                icon = paste_icon_dict['']
+                entry_name = f
+
+            exec_entries += f'{icon} {entry_name}'
+
             if firstline[:2] == "#!":
-                exec_entries += f'{executable_icon} {f}\n'
-            else:
-                file_entries += f'{paste_icon} {f}\n'
+                exec_entries += ' (exec)'
+
+            exec_entries += '\n'
         else:
             dir_entries += f'{folder_icon} {f}\n'
 
-    return file_entries + exec_entries + dir_entries
+    return (file_entries + exec_entries + dir_entries +
+            f"{edit_config_icon} Edit configuration file\n")
 
 
 def fileInterpreter(path: str) -> str:
@@ -174,8 +193,10 @@ def copy_paste_characters(characters: str, active_window: str) -> None:
         '0.05',
     ])
 
-    run(args=['xsel', '-i', '-b'], input=old_clipboard_content)
-    run(args=['xsel', '-i', '-p'], input=old_primary_content)
+    run(args=['xsel', '-i', '-b'],
+        input=old_clipboard_content,
+        encoding='utf-8')
+    run(args=['xsel', '-i', '-p'], input=old_primary_content, encoding='utf-8')
 
 
 def type_characters(characters: str, active_window: str) -> None:
