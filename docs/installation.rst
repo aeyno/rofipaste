@@ -1,8 +1,45 @@
 .. highlight:: shell
 
-============
 Installation
 ============
+
+Dependencies
+------------
+
+RofiPaste depends on `rofi`_ and `FontAwesome`_ 
+
+.. _rofi: https://github.com/davatorium/rofi
+.. _FontAwesome: https://fontawesome.com/
+
+Installing dependencies
+-----------------------
+
+Debian / Ubuntu / Linux Mint / Elementary
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: console
+
+    $ sudo apt-get install rofi
+
+
+Arch / Manjaro
+~~~~~~~~~~~~~~
+
+.. code-block:: console
+
+    $ sudo pacman -Suy rofi
+    $ git clone https://aur.archlinux.org/ttf-font-awesome-4.git
+    $ cd ttf-font-awesome-4
+    $ makepkg -si
+
+
+Fedora
+~~~~~~
+
+.. code-block:: console
+
+    $ sudo dnf install rofi
+
 
 
 Stable release
