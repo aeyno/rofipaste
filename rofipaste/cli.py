@@ -61,17 +61,11 @@ def createIfNotExist(path):
 @click.option('--rofi-args',
               default='',
               help='A string of arguments to give to rofi')
-@click.option(
-    '--max-recent',
-    default=10,
-    help=
-    'Show at most this number of recently used characters (cannot be larger than 10)'
-)
 @click_config_file.configuration_option(config_file_name=os.path.join(
     BaseDirectory.xdg_config_home, 'rofipaste/config'))
 def main(version: bool, edit_config: bool, edit_entry: bool,
          insert_with_clipboard: bool, copy_only: bool, files: str, prompt: str,
-         rofi_args: str, max_recent: int) -> int:
+         rofi_args: str) -> int:
     """
     RofiPaste is a tool allowing you to copy / paste pieces of codes or other useful texts
     """
@@ -123,7 +117,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
             folder_content = f'{rofipaste.undo_icon} ..\n' + folder_content
 
         returncode, stdout = rofipaste.open_main_rofi_window(
-            rofi_args.split(" "), folder_content, prompt, max_recent)
+            rofi_args.split(" "), folder_content, prompt)
 
         if returncode == 1:
             return 0

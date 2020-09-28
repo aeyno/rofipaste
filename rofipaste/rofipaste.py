@@ -105,8 +105,7 @@ def get_active_window() -> str:
                encoding='utf-8').stdout[:-1]
 
 
-def open_main_rofi_window(rofi_args: List[str], characters: str, prompt: str,
-                          max_recent: int) -> Tuple[int, str]:
+def open_main_rofi_window(rofi_args: List[str], characters: str, prompt: str) -> Tuple[int, str]:
     parameters: List[str] = [
         'rofi', '-dmenu', '-markup-rows', '-i', '-multi-select', '-p', prompt,
         '-kb-custom-11', 'Alt+c', '-kb-custom-12', 'Alt+t', '-kb-custom-13',
