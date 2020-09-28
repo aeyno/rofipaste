@@ -137,7 +137,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
             return 0
 
         elif icon in rofipaste.paste_icon_dict.values():
-            path = path.rstrip(' (exec)')
+            path = path.rstrip()
 
             path += '.' + {y: x
                            for x, y in rofipaste.paste_icon_dict.items()}[icon]
