@@ -5,6 +5,15 @@ Installation
 ============
 
 
+Dependencies
+--------------
+
+RofiPaste depends on `rofi`_ and `FontAwesome`_ 
+
+.. _rofi: https://github.com/davatorium/rofi
+.. _FontAwesome: https://fontawesome.com/
+
+
 Stable release
 --------------
 
