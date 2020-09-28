@@ -114,14 +114,21 @@ Here are a few rule to name your commits
 Depending on the type of modifications you've done please add brackets containing the type of modification
 Example of commit name if you corrected a typo : "[TYPO] Removing uppercase"
 
++-----------+---------------------------------------------------------------+
 |Flag       |Modification type                                              |
-|-----------|---------------------------------------------------------------|
++===========+===============================================================+
 |[ADD]      |Adding a new file or function to the project                   |
++-----------+---------------------------------------------------------------+
 |[CLEAN]    |Cleaning code                                                  |
++-----------+---------------------------------------------------------------+
 |[DEL]      |Removing a file or a function                                  |
++-----------+---------------------------------------------------------------+
 |[DOC]      |Modifying the documentation (docstring,rst file, readme...)    |
++-----------+---------------------------------------------------------------+
 |[FIX]      |Fixing a bug in an existing function                           |
++-----------+---------------------------------------------------------------+
 |[TYPO]     |Correcting a typo                                              |
++-----------+---------------------------------------------------------------+
 
 
 Tips
