@@ -110,7 +110,7 @@ def main(version: bool, insert_with_clipboard: bool, copy_only: bool,
     if filesPath[-1] == "/":
         #Removing / at the end to avoid base_folder different from current_folder when going back to top folder
         filesPath = filesPath[:-1]
-    print(filesPath)é
+    print(filesPath)
     createIfNotExist(filesPath)
     base_folder = filesPath
     current_folder = base_folder
