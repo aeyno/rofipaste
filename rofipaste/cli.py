@@ -13,15 +13,21 @@ config_file_name: str = os.path.join(BaseDirectory.xdg_config_home,
 
 
 @click.command()
+@click.option('--version',
+              default=False,
+              help='Print the current version',
+              is_flag=True)
 @click.option(
     '--edit-config',
     default=False,
     help='Open your default terminal editor to edit your config file',
     is_flag=True)
-@click.option('--version',
-              default=False,
-              help='Print the current version',
-              is_flag=True)
+@click.option(
+    '--edit-entry',
+    default=False,
+    help=
+    'Open your default terminal editor to edit one of your paste entry (or create a new one)',
+    is_flag=True)
 @click.option(
     '-p',
     '--insert-with-clipboard',
@@ -54,22 +60,36 @@ config_file_name: str = os.path.join(BaseDirectory.xdg_config_home,
     'Show at most this number of recently used characters (cannot be larger than 10)'
 )
 @click_config_file.configuration_option(config_file_name=config_file_name)
-def main(edit_config: bool, version: bool, insert_with_clipboard: bool,
-         copy_only: bool, files: str, prompt: str, rofi_args: str,
-         max_recent: int) -> int:
+def main(version: bool, edit_config: bool, edit_entry: bool,
+         insert_with_clipboard: bool, copy_only: bool, files: str, prompt: str,
+         rofi_args: str, max_recent: int) -> int:
     """
     RofiPaste is a tool allowing you to copy / paste pieces of codes or other useful texts
     """
 
+    filesPath: str = os.path.join(BaseDirectory.xdg_data_home, 'rofipaste',
+                                  files)
+
     if edit_config:
         click.edit(filename=config_file_name)
         return 0
+
+    if edit_entry:
+        filename = click.prompt('Please enter the filename',
+                                default="new_entry")
+        dirname = os.path.dirname(filename)
+
+        dirname = os.path.join(filesPath, dirname)
+
+        if not os.path.isdir(dirname):
+            os.makedirs(dirname)
+
+        click.edit(filename=os.path.join(filesPath, filename))
+        return 0
+
     if version:
         click.echo(f"Current version: {__version__}")
         return 0
-
-    filesPath: str = os.path.join(BaseDirectory.xdg_data_home, 'rofipaste',
-                                  files)
 
     Action = rofipaste.Action
     action = {
