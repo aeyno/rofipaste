@@ -4,6 +4,7 @@ import os
 from xdg import BaseDirectory
 import click
 import click_config_file
+from pathlib import Path
 from rofipaste import rofipaste
 
 __version__ = '0.1.2'
@@ -47,6 +48,13 @@ __version__ = '0.1.2'
 )
 @click_config_file.configuration_option(config_file_name=os.path.join(
     BaseDirectory.xdg_config_home, 'rofipaste/config'))
+
+def createIfNotExist(path):
+    """
+    Create a directory if it doesn't exists
+    """
+    Path(path).mkdir(parents=True, exist_ok=True)
+
 def main(version: bool, insert_with_clipboard: bool, copy_only: bool,
          files: str, prompt: str, rofi_args: str, max_recent: int) -> int:
     """
@@ -71,6 +79,8 @@ def main(version: bool, insert_with_clipboard: bool, copy_only: bool,
     if filesPath[-1] == "/":
         #Removing / at the end to avoid base_folder different from current_folder when going back to top folder
         filesPath = filesPath[:-1]
+    print(filesPath)é
+    createIfNotExist(filesPath)
     base_folder = filesPath
     current_folder = base_folder
 

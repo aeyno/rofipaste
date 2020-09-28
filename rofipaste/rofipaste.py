@@ -20,7 +20,6 @@ class Action(Enum):
     INSERT_WITH_CLIPBOARD = auto()
     TYPE = auto()
 
-
 def read_folder_content(folder_path: str) -> str:
     """read_folder_content.
     
