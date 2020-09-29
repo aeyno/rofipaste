@@ -123,8 +123,8 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
             return 0
 
         splitted = stdout.rstrip('\n').split(' ')
-        icon, path = splitted[0], os.path.join(current_folder,
-                                               ' '.join(splitted[1:]))
+        icon, path = splitted[0], os.path.join(
+            current_folder, ' '.join(splitted[1:]).replace(' (exec)', ''))
 
         if icon == rofipaste.folder_icon:
             current_folder = path
