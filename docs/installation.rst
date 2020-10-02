@@ -19,7 +19,7 @@ Debian / Ubuntu / Linux Mint / Elementary
 
 .. code-block:: console
 
-    $ sudo apt-get install rofi
+    $ sudo apt-get install rofi fonts-font-awesome
 
 
 Arch / Manjaro
@@ -39,6 +39,11 @@ Fedora
 .. code-block:: console
 
     $ sudo dnf install rofi
+
+
+.. todo::
+
+    Add instructions for font-awesome
 
 
 
