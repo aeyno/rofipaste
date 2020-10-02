@@ -5,12 +5,31 @@ from xdg import BaseDirectory
 import click
 import click_config_file
 from pathlib import Path
-from rofipaste import rofipaste
-
-__version__: str = '0.1.3'
+from rofipaste import rofipaste, __version__ as version, __config_file_name__ as config_file_name
 
 config_file_name: str = os.path.join(BaseDirectory.xdg_config_home,
                                      'rofipaste/config')
+
+default_config = """##################################
+##     Default config file      ##
+## Uncomment the lines you want ##
+##################################
+
+## Use your clipboard to copy paste things instead of just typing it (recommanded on Wayland and for non qwerty keyboards)
+# insert_with_clipboard=True                # Default: False
+
+## Just copy the 'paste' content
+# copy_only=True                            # Default: False
+
+## Use a different folder than the default one for storing your pastes
+# files="/home/<my username>/my pastes"    # Default: /home/<my username>/.local/share/rofipaste/pastes_folder
+
+## Use a different prompt in rofi
+# prompt="This is my custom prompt"         # Default: "Rofipaste ❤ "
+
+## Give rofi some arguments
+# rofi_args=""                              # Default: ""
+"""
 
 
 def createIfNotExist(path):
@@ -61,8 +80,7 @@ def createIfNotExist(path):
 @click.option('--rofi-args',
               default='',
               help='A string of arguments to give to rofi')
-@click_config_file.configuration_option(config_file_name=os.path.join(
-    BaseDirectory.xdg_config_home, 'rofipaste/config'))
+@click_config_file.configuration_option(config_file_name=config_file_name)
 def main(version: bool, edit_config: bool, edit_entry: bool,
          insert_with_clipboard: bool, copy_only: bool, files: str, prompt: str,
          rofi_args: str) -> int:
@@ -72,6 +90,13 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
 
     filesPath: str = os.path.join(BaseDirectory.xdg_data_home, 'rofipaste',
                                   files)
+
+    config_dirname = os.path.dirname(config_file_name)
+    if not os.path.isdir(config_dirname):
+        os.makedirs(config_dirname)
+    if not os.path.isfile(config_file_name):
+        with open(config_file_name, 'w') as config_file:
+            config_file.write(default_config)
 
     if edit_config:
         click.edit(filename=config_file_name)
@@ -91,7 +116,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
         return 0
 
     if version:
-        click.echo(f"Current version: {__version__}")
+        click.echo(f"Current version: {version}")
         return 0
 
     Action = rofipaste.Action
