@@ -5,3 +5,12 @@ __email__ = 'tom.gouville@telecomnancy.net / lucas.valentin@telecomnancy.net'
 __version__ = '0.1.3'
 
 __config_file_name__ = ''
+
+
+def get_clipboard_content() -> str:
+    from subprocess import run
+
+    stdout: str = run(args=['xsel', '-o', '-b'],
+                      capture_output=True,
+                      encoding='utf-8').stdout
+    return stdout
