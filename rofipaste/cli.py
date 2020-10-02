@@ -5,12 +5,31 @@ from xdg import BaseDirectory
 import click
 import click_config_file
 from pathlib import Path
-from rofipaste import rofipaste
-
-__version__: str = '0.1.3'
+from rofipaste import rofipaste, __version__ as version
 
 config_file_name: str = os.path.join(BaseDirectory.xdg_config_home,
                                      'rofipaste/config')
+
+default_config = """##################################
+##     Default config file      ##
+## Uncomment the lines you want ##
+##################################
+
+## Use your clipboard to copy paste things instead of just typing it (recommanded on Wayland and for non qwerty keyboards)
+# insert_with_clipboard=True                # Default: False
+
+## Just copy the 'paste' content
+# copy_only=True                            # Default: False
+
+## Use a different folder than the default one for storing your pastes
+# files="/home/<my username>/my pastes"    # Default: /home/<my username>/.local/share/rofipaste/pastes_folder
+
+## Use a different prompt in rofi
+# prompt="This is my custom prompt"         # Default: "Rofipaste ❤ "
+
+## Give rofi some arguments
+# rofi_args=""                              # Default: ""
+"""
 
 
 def createIfNotExist(path):
@@ -61,8 +80,7 @@ def createIfNotExist(path):
 @click.option('--rofi-args',
               default='',
               help='A string of arguments to give to rofi')
-@click_config_file.configuration_option(config_file_name=os.path.join(
-    BaseDirectory.xdg_config_home, 'rofipaste/config'))
+@click_config_file.configuration_option(config_file_name=config_file_name)
 def main(version: bool, edit_config: bool, edit_entry: bool,
          insert_with_clipboard: bool, copy_only: bool, files: str, prompt: str,
          rofi_args: str) -> int:
@@ -72,6 +90,13 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
 
     filesPath: str = os.path.join(BaseDirectory.xdg_data_home, 'rofipaste',
                                   files)
+
+    config_dirname = os.path.dirname(config_file_name)
+    if not os.path.isdir(config_dirname):
+        os.makedirs(config_dirname)
+    if not os.path.isfile(config_file_name):
+        with open(config_file_name, 'w') as config_file:
+            config_file.write(default_config)
 
     if edit_config:
         click.edit(filename=config_file_name)
@@ -91,7 +116,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
         return 0
 
     if version:
-        click.echo(f"Current version: {__version__}")
+        click.echo(f"Current version: {version}")
         return 0
 
     Action = rofipaste.Action
@@ -105,7 +130,6 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
     if filesPath[-1] == "/":
         #Removing / at the end to avoid base_folder different from current_folder when going back to top folder
         filesPath = filesPath[:-1]
-    print(filesPath)
     createIfNotExist(filesPath)
     base_folder = filesPath
     current_folder = base_folder
@@ -123,8 +147,8 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
             return 0
 
         splitted = stdout.rstrip('\n').split(' ')
-        icon, path = splitted[0], os.path.join(current_folder,
-                                               ' '.join(splitted[1:]))
+        icon, path = splitted[0], os.path.join(
+            current_folder, ' '.join(splitted[1:]).replace(' (exec)', ''))
 
         if icon == rofipaste.folder_icon:
             current_folder = path
@@ -137,7 +161,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
             return 0
 
         elif icon in rofipaste.paste_icon_dict.values():
-            path = path.rstrip(' (exec)')
+            path = path.rstrip()
 
             path += '.' + {y: x
                            for x, y in rofipaste.paste_icon_dict.items()}[icon]
@@ -160,6 +184,8 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
                 elif returncode == 22:
                     rofipaste.copy_paste_characters(data, active_window)
                 return 0
+        else:
+            return -1
 
     return 0
 
