@@ -130,7 +130,6 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
     if filesPath[-1] == "/":
         #Removing / at the end to avoid base_folder different from current_folder when going back to top folder
         filesPath = filesPath[:-1]
-    print(filesPath)
     createIfNotExist(filesPath)
     base_folder = filesPath
     current_folder = base_folder
@@ -185,6 +184,8 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
                 elif returncode == 22:
                     rofipaste.copy_paste_characters(data, active_window)
                 return 0
+        else:
+            return -1
 
     return 0
 
