@@ -28,6 +28,7 @@ class Action(Enum):
     INSERT_WITH_CLIPBOARD = auto()
     TYPE = auto()
 
+
 def read_folder_content(folder_path: str) -> str:
     """read_folder_content.
     
@@ -87,9 +88,9 @@ def fileInterpreter(path: str) -> str:
         output: str = run([shebang[2:], path],
                           capture_output=True,
                           encoding='utf-8').stdout
-        return output
+        return output.rstrip()
 
-    return content
+    return content.rstrip()
 
 
 def get_active_window() -> str:
@@ -105,7 +106,8 @@ def get_active_window() -> str:
                encoding='utf-8').stdout[:-1]
 
 
-def open_main_rofi_window(rofi_args: List[str], characters: str, prompt: str) -> Tuple[int, str]:
+def open_main_rofi_window(rofi_args: List[str], characters: str,
+                          prompt: str) -> Tuple[int, str]:
     parameters: List[str] = [
         'rofi', '-dmenu', '-markup-rows', '-i', '-multi-select', '-p', prompt,
         '-kb-custom-11', 'Alt+c', '-kb-custom-12', 'Alt+t', '-kb-custom-13',
