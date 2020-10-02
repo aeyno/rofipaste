@@ -5,7 +5,7 @@ from xdg import BaseDirectory
 import click
 import click_config_file
 from pathlib import Path
-from rofipaste import rofipaste, __version__ as version, __config_file_name__ as config_file_name
+from rofipaste import rofipaste, __version__ as version
 
 config_file_name: str = os.path.join(BaseDirectory.xdg_config_home,
                                      'rofipaste/config')
