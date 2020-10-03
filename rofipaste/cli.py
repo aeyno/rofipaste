@@ -4,12 +4,39 @@ import os
 from xdg import BaseDirectory
 import click
 import click_config_file
-from rofipaste import rofipaste
-
-__version__: str = '0.1.2'
+from pathlib import Path
+from rofipaste import rofipaste, __version__
 
 config_file_name: str = os.path.join(BaseDirectory.xdg_config_home,
                                      'rofipaste/config')
+
+default_config = """##################################
+##     Default config file      ##
+## Uncomment the lines you want ##
+##################################
+
+## Use your clipboard to copy paste things instead of just typing it (recommanded on Wayland and for non qwerty keyboards)
+# insert_with_clipboard=True                # Default: False
+
+## Just copy the 'paste' content
+# copy_only=True                            # Default: False
+
+## Use a different folder than the default one for storing your pastes
+# files="/home/<my username>/my pastes"    # Default: /home/<my username>/.local/share/rofipaste/pastes_folder
+
+## Use a different prompt in rofi
+# prompt="This is my custom prompt"         # Default: "Rofipaste ❤ "
+
+## Give rofi some arguments
+# rofi_args=""                              # Default: ""
+"""
+
+
+def createIfNotExist(path):
+    """
+    Create a directory if it doesn't exists
+    """
+    Path(path).mkdir(parents=True, exist_ok=True)
 
 
 @click.command()
@@ -53,22 +80,23 @@ config_file_name: str = os.path.join(BaseDirectory.xdg_config_home,
 @click.option('--rofi-args',
               default='',
               help='A string of arguments to give to rofi')
-@click.option(
-    '--max-recent',
-    default=10,
-    help=
-    'Show at most this number of recently used characters (cannot be larger than 10)'
-)
 @click_config_file.configuration_option(config_file_name=config_file_name)
 def main(version: bool, edit_config: bool, edit_entry: bool,
          insert_with_clipboard: bool, copy_only: bool, files: str, prompt: str,
-         rofi_args: str, max_recent: int) -> int:
+         rofi_args: str) -> int:
     """
     RofiPaste is a tool allowing you to copy / paste pieces of codes or other useful texts
     """
 
     filesPath: str = os.path.join(BaseDirectory.xdg_data_home, 'rofipaste',
                                   files)
+
+    config_dirname = os.path.dirname(config_file_name)
+    if not os.path.isdir(config_dirname):
+        os.makedirs(config_dirname)
+    if not os.path.isfile(config_file_name):
+        with open(config_file_name, 'w') as config_file:
+            config_file.write(default_config)
 
     if edit_config:
         click.edit(filename=config_file_name)
@@ -102,6 +130,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
     if filesPath[-1] == "/":
         #Removing / at the end to avoid base_folder different from current_folder when going back to top folder
         filesPath = filesPath[:-1]
+    createIfNotExist(filesPath)
     base_folder = filesPath
     current_folder = base_folder
 
@@ -112,27 +141,27 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
             folder_content = f'{rofipaste.undo_icon} ..\n' + folder_content
 
         returncode, stdout = rofipaste.open_main_rofi_window(
-            rofi_args.split(" "), folder_content, prompt, max_recent)
+            rofi_args.split(" "), folder_content, prompt)
 
         if returncode == 1:
             return 0
 
         splitted = stdout.rstrip('\n').split(' ')
-        icon, path = splitted[0], os.path.join(current_folder,
-                                               ' '.join(splitted[1:]))
+        icon, path = splitted[0], os.path.join(
+            current_folder, ' '.join(splitted[1:]).replace(' (exec)', ''))
 
         if icon == rofipaste.folder_icon:
             current_folder = path
 
         elif icon == rofipaste.undo_icon:
             current_folder = os.path.dirname(current_folder)
-        
+
         elif icon == rofipaste.edit_config_icon:
             click.launch(config_file_name)
             return 0
 
         elif icon in rofipaste.paste_icon_dict.values():
-            path = path.rstrip(' (exec)')
+            path = path.rstrip()
 
             path += '.' + {y: x
                            for x, y in rofipaste.paste_icon_dict.items()}[icon]
@@ -155,6 +184,8 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
                 elif returncode == 22:
                     rofipaste.copy_paste_characters(data, active_window)
                 return 0
+        else:
+            return -1
 
     return 0
 
