@@ -109,14 +109,12 @@ def get_active_window() -> str:
 def open_main_rofi_window(rofi_args: List[str], characters: str,
                           prompt: str) -> Tuple[int, str]:
     parameters: List[str] = [
-        'rofi', '-dmenu', '-markup-rows', '-i', '-multi-select', '-p', prompt,
-        '-kb-custom-11', 'Alt+c', '-kb-custom-12', 'Alt+t', '-kb-custom-13',
-        'Alt+p', *rofi_args
+        'rofi', '-dmenu', '-markup-rows', '-i', '-p', prompt,
+        '-kb-custom-11', 'Ctrl+c', '-kb-custom-12', 'Ctrl+t', '-kb-custom-13',
+        'Ctrl+p',"-kb-custom-14","Ctrl+e", *rofi_args
     ]
 
-    # TODO: Remove "-multi-select" from the parameters ?
-
-    parameters.extend(['-mesg', "Type :edit to edit your config file"])
+    #parameters.extend(['-mesg', "Type :edit to edit your config file"])
 
     rofi: CompletedProcess = run(parameters,
                                  input=characters,
@@ -214,3 +212,17 @@ def type_characters(characters: str, active_window: str) -> None:
 
     run(['xdotool', 'type', '--window', active_window, characters],
         encoding="utf-8")
+
+def show_message(message: str) -> None:
+    """Show a message using rofi
+    """
+    run(args=["rofi", "-e", message], encoding='utf-8')
+
+def edit_file(path: str, editor: str = 'editor'):
+    """edit a file with the given editor
+
+    """
+    if(os.path.isfile(path)):
+        run(args=[editor, path], encoding='utf-8')
+    else:
+        show_message("ERROR: file " + path + "not found")
