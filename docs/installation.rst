@@ -6,7 +6,7 @@ Installation
 Dependencies
 ------------
 
-RofiPaste depends on `rofi`_ and `FontAwesome`_ 
+RofiPaste depends on `rofi`_, `FontAwesome`_ and xdotool
 
 .. _rofi: https://github.com/davatorium/rofi
 .. _FontAwesome: https://fontawesome.com/
@@ -19,7 +19,7 @@ Debian / Ubuntu / Linux Mint / Elementary
 
 .. code-block:: console
 
-    $ sudo apt-get install rofi
+    $ sudo apt-get install rofi fonts-font-awesome xdotool
 
 
 Arch / Manjaro
@@ -27,7 +27,7 @@ Arch / Manjaro
 
 .. code-block:: console
 
-    $ sudo pacman -Suy rofi
+    $ sudo pacman -Suy rofi xdotool
     $ git clone https://aur.archlinux.org/ttf-font-awesome-4.git
     $ cd ttf-font-awesome-4
     $ makepkg -si
@@ -38,7 +38,12 @@ Fedora
 
 .. code-block:: console
 
-    $ sudo dnf install rofi
+    $ sudo dnf install rofi xdotool
+
+
+.. todo::
+
+    Add instructions for font-awesome
 
 
 

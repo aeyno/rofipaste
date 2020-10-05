@@ -5,7 +5,7 @@ from xdg import BaseDirectory
 import click
 import click_config_file
 from pathlib import Path
-from rofipaste import rofipaste, __version__ as version
+from rofipaste import rofipaste, __version__
 
 config_file_name: str = os.path.join(BaseDirectory.xdg_config_home,
                                      'rofipaste/config')
@@ -116,7 +116,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
         return 0
 
     if version:
-        click.echo(f"Current version: {version}")
+        click.echo(f"Current version: {__version__}")
         return 0
 
     Action = rofipaste.Action
