@@ -110,8 +110,8 @@ def open_main_rofi_window(rofi_args: List[str], characters: str,
                           prompt: str) -> Tuple[int, str]:
     parameters: List[str] = [
         'rofi', '-dmenu', '-markup-rows', '-i', '-p', prompt,
-        '-kb-custom-11', 'Alt+c', '-kb-custom-12', 'Alt+t', '-kb-custom-13',
-        'Alt+p',"-kb-custom-14","Alt+e", *rofi_args
+        '-kb-custom-11', 'Ctrl+c', '-kb-custom-12', 'Ctrl+t', '-kb-custom-13',
+        'Ctrl+p',"-kb-custom-14","Ctrl+e", *rofi_args
     ]
 
     #parameters.extend(['-mesg', "Type :edit to edit your config file"])
