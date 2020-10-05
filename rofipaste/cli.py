@@ -80,10 +80,14 @@ def createIfNotExist(path):
 @click.option('--rofi-args',
               default='',
               help='A string of arguments to give to rofi')
+@click.option('-e',
+              '--editor',
+              default='editor',
+              help='path to your favorite editor')
 @click_config_file.configuration_option(config_file_name=config_file_name)
 def main(version: bool, edit_config: bool, edit_entry: bool,
          insert_with_clipboard: bool, copy_only: bool, files: str, prompt: str,
-         rofi_args: str) -> int:
+         rofi_args: str, editor: str) -> int:
     """
     RofiPaste is a tool allowing you to copy / paste pieces of codes or other useful texts
     """
@@ -183,6 +187,9 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
                     rofipaste.type_characters(data, active_window)
                 elif returncode == 22:
                     rofipaste.copy_paste_characters(data, active_window)
+                elif returncode == 23:
+                    #Alt+e opens edit mode
+                    rofipaste.edit_file(path, editor)
                 return 0
         else:
             return -1
