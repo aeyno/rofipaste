@@ -225,11 +225,13 @@ def show_message(message: str) -> None:
     """
     run(args=["rofi", "-e", message], encoding='utf-8')
 
-def edit_file(path: str, editor: str = 'editor'):
-    """edit a file with the given editor
+def edit_file(path: str, editor: str = 'none'):
+    """edit a file with the given command
 
     """
-    if(os.path.isfile(path)):
+    if editor == "none":
+        show_message("ERROR: please add your editor in the config file")
+    elif os.path.isfile(path):
         run(args=[editor, path], encoding='utf-8')
     else:
         show_message("ERROR: file " + path + "not found")

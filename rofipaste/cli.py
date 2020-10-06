@@ -81,7 +81,7 @@ def createIfNotExist(path):
               help='A string of arguments to give to rofi')
 @click.option('-e',
               '--editor',
-              default='editor',
+              default='none',
               help='path to your favorite editor')
 @click_config_file.configuration_option(config_file_name=config_file_name)
 def main(version: bool, edit_config: bool, edit_entry: bool,
@@ -102,7 +102,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
             config_file.write(default_config)
 
     if edit_config:
-        click.edit(filename=config_file_name)
+        rofipaste.edit_file(config_file_name, editor)
         return 0
 
     if edit_entry:
@@ -115,7 +115,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
         if not os.path.isdir(dirname):
             os.makedirs(dirname)
 
-        click.edit(filename=os.path.join(filesPath, filename))
+        rofipaste.edit_file(os.path.join(filesPath, filename), editor)
         return 0
 
     if version:
