@@ -164,7 +164,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
             current_folder = os.path.dirname(current_folder)
 
         elif icon == rofipaste.edit_config_icon:
-            rofipaste.edit_file(config_file_name)
+            rofipaste.edit_file(config_file_name, editor)
             return 0
 
         elif icon in rofipaste.paste_icon_dict.values():

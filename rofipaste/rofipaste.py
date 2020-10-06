@@ -232,6 +232,9 @@ def edit_file(path: str, editor: str = 'none'):
     if editor == "none":
         show_message("ERROR: please add your editor in the config file")
     elif os.path.isfile(path):
-        run(args=[editor, path], encoding='utf-8')
+        try:
+            run(args=[editor, path], encoding='utf-8')
+        except:
+            show_message("ERROR: error opening editor")
     else:
-        show_message("ERROR: file " + path + "not found")
+        show_message("ERROR: file " + path + " not found")
