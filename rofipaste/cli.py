@@ -7,8 +7,7 @@ import click_config_file
 from pathlib import Path
 from rofipaste import rofipaste, __version__
 
-config_file_name: str = os.path.join(BaseDirectory.xdg_config_home,
-                                     'rofipaste/config')
+config_file_name: str = rofipaste.config_file_name
 
 default_config = """##################################
 ##     Default config file      ##
@@ -127,7 +126,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
     action = {
         True: Action.TYPE,
         insert_with_clipboard: Action.INSERT_WITH_CLIPBOARD,
-        copy_only: Action.COPY_ONLY
+        copy_only: Action.COPY_ONLY,
     }[True]
 
     active_window = rofipaste.get_active_window()
@@ -150,6 +149,10 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
         if returncode == 1:
             return 0
 
+        if(stdout[0] == rofipaste.command_prefix):
+            rofipaste.commandInterpreter(stdout.rstrip('\n'))
+            return 0
+
         splitted = stdout.rstrip('\n').split(' ')
         icon, path = splitted[0], os.path.join(
             current_folder, ' '.join(splitted[1:]).replace(' (exec)', ''))
@@ -161,7 +164,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
             current_folder = os.path.dirname(current_folder)
 
         elif icon == rofipaste.edit_config_icon:
-            click.launch(config_file_name)
+            rofipaste.edit_file(config_file_name)
             return 0
 
         elif icon in rofipaste.paste_icon_dict.values():
@@ -195,7 +198,3 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
             return -1
 
     return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())  # pragma: no cover

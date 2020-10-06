@@ -2,11 +2,9 @@
 
 import os
 from subprocess import run, CompletedProcess
-
+from xdg import BaseDirectory
 from enum import Enum, auto
-
 from typing import List, Tuple, Dict
-
 import click
 
 folder_icon: str = ""
@@ -21,13 +19,13 @@ paste_icon_dict: Dict[str, str] = dict(py="",
                                        cpp="C++",
                                        sh="")
 paste_icon_dict[''] = ''
-
+config_file_name: str = os.path.join(BaseDirectory.xdg_config_home,'rofipaste/config')
+command_prefix: str = "/"
 
 class Action(Enum):
     COPY_ONLY = auto()
     INSERT_WITH_CLIPBOARD = auto()
     TYPE = auto()
-
 
 def read_folder_content(folder_path: str) -> str:
     """read_folder_content.
@@ -69,6 +67,15 @@ def read_folder_content(folder_path: str) -> str:
     return (file_entries + exec_entries + dir_entries +
             f"{edit_config_icon} Edit configuration file\n")
 
+def commandInterpreter(cmd: str) -> None:
+    commands = {
+        "config" : lambda *args: edit_file(config_file_name),
+    }
+    if cmd[0] == command_prefix:
+        args = cmd[1:].split(" ")
+    else:
+        args = cmd.split(" ")
+    commands[args[0]](args[1:])
 
 def fileInterpreter(path: str) -> str:
     """fileInterpreter
