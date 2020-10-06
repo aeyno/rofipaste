@@ -21,6 +21,9 @@ Debian / Ubuntu / Linux Mint / Elementary
 
     $ sudo apt-get install rofi fonts-font-awesome xdotool
 
+.. todo::
+
+    Update instructions for font-awesome (the version from apt isn't up to date)
 
 Arch / Manjaro
 ~~~~~~~~~~~~~~
