@@ -2,11 +2,9 @@
 
 import os
 from subprocess import run, CompletedProcess
-
+from xdg import BaseDirectory
 from enum import Enum, auto
-
 from typing import List, Tuple, Dict
-
 import click
 
 folder_icon: str = ""
@@ -21,13 +19,13 @@ paste_icon_dict: Dict[str, str] = dict(py="",
                                        cpp="C++",
                                        sh="")
 paste_icon_dict[''] = ''
-
+config_file_name: str = os.path.join(BaseDirectory.xdg_config_home,'rofipaste/config')
+command_prefix: str = "/"
 
 class Action(Enum):
     COPY_ONLY = auto()
     INSERT_WITH_CLIPBOARD = auto()
     TYPE = auto()
-
 
 def read_folder_content(folder_path: str) -> str:
     """read_folder_content.
@@ -69,6 +67,15 @@ def read_folder_content(folder_path: str) -> str:
     return (file_entries + exec_entries + dir_entries +
             f"{edit_config_icon} Edit configuration file\n")
 
+def commandInterpreter(cmd: str) -> None:
+    commands = {
+        "config" : lambda *args: edit_file(config_file_name),
+    }
+    if cmd[0] == command_prefix:
+        args = cmd[1:].split(" ")
+    else:
+        args = cmd.split(" ")
+    commands[args[0]](args[1:])
 
 def fileInterpreter(path: str) -> str:
     """fileInterpreter
@@ -109,14 +116,12 @@ def get_active_window() -> str:
 def open_main_rofi_window(rofi_args: List[str], characters: str,
                           prompt: str) -> Tuple[int, str]:
     parameters: List[str] = [
-        'rofi', '-dmenu', '-markup-rows', '-i', '-multi-select', '-p', prompt,
-        '-kb-custom-11', 'Alt+c', '-kb-custom-12', 'Alt+t', '-kb-custom-13',
-        'Alt+p', *rofi_args
+        'rofi', '-dmenu', '-markup-rows', '-i', '-p', prompt,
+        '-kb-custom-11', 'Ctrl+c', '-kb-custom-12', 'Ctrl+t', '-kb-custom-13',
+        'Alt+p',"-kb-custom-14","Alt+e", *rofi_args
     ]
 
-    # TODO: Remove "-multi-select" from the parameters ?
-
-    parameters.extend(['-mesg', "Type :edit to edit your config file"])
+    #parameters.extend(['-mesg', "Type :edit to edit your config file"])
 
     rofi: CompletedProcess = run(parameters,
                                  input=characters,
@@ -214,3 +219,22 @@ def type_characters(characters: str, active_window: str) -> None:
 
     run(['xdotool', 'type', '--window', active_window, characters],
         encoding="utf-8")
+
+def show_message(message: str) -> None:
+    """Show a message using rofi
+    """
+    run(args=["rofi", "-e", message], encoding='utf-8')
+
+def edit_file(path: str, editor: str = 'none'):
+    """edit a file with the given command
+
+    """
+    if editor == "none":
+        show_message("ERROR: please add your editor in the config file")
+    elif os.path.isfile(path):
+        try:
+            run(args=[*editor.split(" "), path], encoding='utf-8')
+        except:
+            show_message("ERROR: error opening editor")
+    else:
+        show_message("ERROR: file " + path + " not found")

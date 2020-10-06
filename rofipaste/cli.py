@@ -7,8 +7,7 @@ import click_config_file
 from pathlib import Path
 from rofipaste import rofipaste, __version__
 
-config_file_name: str = os.path.join(BaseDirectory.xdg_config_home,
-                                     'rofipaste/config')
+config_file_name: str = rofipaste.config_file_name
 
 default_config = """##################################
 ##     Default config file      ##
@@ -80,10 +79,14 @@ def createIfNotExist(path):
 @click.option('--rofi-args',
               default='',
               help='A string of arguments to give to rofi')
+@click.option('-e',
+              '--editor',
+              default='none',
+              help='path to your favorite editor')
 @click_config_file.configuration_option(config_file_name=config_file_name)
 def main(version: bool, edit_config: bool, edit_entry: bool,
          insert_with_clipboard: bool, copy_only: bool, files: str, prompt: str,
-         rofi_args: str) -> int:
+         rofi_args: str, editor: str) -> int:
     """
     RofiPaste is a tool allowing you to copy / paste pieces of codes or other useful texts
     """
@@ -99,7 +102,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
             config_file.write(default_config)
 
     if edit_config:
-        click.edit(filename=config_file_name)
+        rofipaste.edit_file(config_file_name, editor)
         return 0
 
     if edit_entry:
@@ -112,7 +115,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
         if not os.path.isdir(dirname):
             os.makedirs(dirname)
 
-        click.edit(filename=os.path.join(filesPath, filename))
+        rofipaste.edit_file(os.path.join(filesPath, filename), editor)
         return 0
 
     if version:
@@ -123,7 +126,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
     action = {
         True: Action.TYPE,
         insert_with_clipboard: Action.INSERT_WITH_CLIPBOARD,
-        copy_only: Action.COPY_ONLY
+        copy_only: Action.COPY_ONLY,
     }[True]
 
     active_window = rofipaste.get_active_window()
@@ -146,6 +149,10 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
         if returncode == 1:
             return 0
 
+        if(stdout[0] == rofipaste.command_prefix):
+            rofipaste.commandInterpreter(stdout.rstrip('\n'))
+            return 0
+
         splitted = stdout.rstrip('\n').split(' ')
         icon, path = splitted[0], os.path.join(
             current_folder, ' '.join(splitted[1:]).replace(' (exec)', ''))
@@ -157,7 +164,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
             current_folder = os.path.dirname(current_folder)
 
         elif icon == rofipaste.edit_config_icon:
-            click.launch(config_file_name)
+            rofipaste.edit_file(config_file_name, editor)
             return 0
 
         elif icon in rofipaste.paste_icon_dict.values():
@@ -183,12 +190,11 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
                     rofipaste.type_characters(data, active_window)
                 elif returncode == 22:
                     rofipaste.copy_paste_characters(data, active_window)
+                elif returncode == 23:
+                    #Alt+e opens edit mode
+                    rofipaste.edit_file(path, editor)
                 return 0
         else:
             return -1
 
     return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())  # pragma: no cover
