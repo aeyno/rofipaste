@@ -233,7 +233,7 @@ def edit_file(path: str, editor: str = 'none'):
         show_message("ERROR: please add your editor in the config file")
     elif os.path.isfile(path):
         try:
-            run(args=[editor, path], encoding='utf-8')
+            run(args=[*editor.split(" "), path], encoding='utf-8')
         except:
             show_message("ERROR: error opening editor")
     else:
