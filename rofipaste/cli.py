@@ -107,7 +107,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
             config_file.write(default_config)
 
     if edit_config:
-        rofipaste.edit_file(config_file_name, editor)
+        rofipaste.edit_file(config_file_name, editor, xdg_open=True)
         return 0
 
     if edit_entry:
@@ -155,7 +155,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
             return 0
 
         if (stdout[0] == rofipaste.command_prefix):
-            rofipaste.commandInterpreter(stdout.rstrip('\n'))
+            rofipaste.commandInterpreter(stdout.rstrip('\n'), editor)
             return 0
 
         splitted = stdout.rstrip('\n').split(' ')
@@ -169,7 +169,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
             current_folder = os.path.dirname(current_folder)
 
         elif icon == rofipaste.edit_config_icon:
-            rofipaste.edit_file(config_file_name, editor)
+            rofipaste.edit_file(config_file_name, editor, xdg_open=True)
             return 0
 
         elif icon in rofipaste.paste_icon_dict.values():
