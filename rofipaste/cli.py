@@ -28,6 +28,11 @@ default_config = """##################################
 
 ## Give rofi some arguments
 # rofi_args=""                              # Default: ""
+
+## Use your favorite editor
+# editor=subl                               # This is for sublime text
+# editor=vscode                             # Visual Studio Code
+# editor=termite -e nvim                    # Use neovim in termite (WARNING: If you just use `nvim` as your editor, it can't work because rofipaste can't know your terminal emulator !)
 """
 
 
@@ -149,7 +154,7 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
         if returncode == 1:
             return 0
 
-        if(stdout[0] == rofipaste.command_prefix):
+        if (stdout[0] == rofipaste.command_prefix):
             rofipaste.commandInterpreter(stdout.rstrip('\n'))
             return 0
 
