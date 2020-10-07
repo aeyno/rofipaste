@@ -233,18 +233,36 @@ def show_message(message: str) -> None:
     run(args=["rofi", "-e", message], encoding='utf-8')
 
 
-def edit_file(path: str, editor: str = 'none', xdg_open: bool = False):
+def edit_file(path: str, editor: str = '', xdg_open: bool = False):
     """edit a file with the given command
 
     """
-    if editor == "none":
+
+    file_template = "$FILE"
+
+    if editor == "":
         if xdg_open:
             click.launch(url=path)
         else:
             show_message("ERROR: please add your editor in the config file")
     elif os.path.isfile(path):
+        if file_template in editor:
+            command = editor.replace(file_template, path)
+        else:
+            command = editor + ' ' + path
         try:
-            run(args=[*editor.split(" "), path], encoding='utf-8')
+            # TODO: Comment this since this isn't usual
+            split_quotes = [
+                y for x in command.rstrip().split('"') for y in x.split("'")
+            ]
+
+            splitted = [[split_quotes[i]] if i %
+                        2 else split_quotes[i].rstrip().split(' ')
+                        for i in range(len(split_quotes))]
+
+            s = [x for y in splitted for x in y]
+
+            run(args=[*s], encoding='utf-8')
         except:
             show_message("ERROR: error opening editor")
     else:
