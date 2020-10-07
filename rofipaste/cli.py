@@ -30,9 +30,8 @@ default_config = """##################################
 # rofi_args=""                              # Default: ""
 
 ## Use your favorite editor
-# editor=subl                               # This is for sublime text
-# editor=vscode                             # Visual Studio Code
-# editor=termite -e nvim                    # Use neovim in termite (WARNING: If you just use `nvim` as your editor, it can't work because rofipaste can't know your terminal emulator !)
+# editor="subl"                             # This is for sublime text
+# editor="vscode"                           # Visual Studio Code
 """
 
 
