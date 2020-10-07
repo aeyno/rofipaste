@@ -32,6 +32,7 @@ default_config = """##################################
 ## Use your favorite editor
 # editor="subl"                             # This is for sublime text
 # editor="vscode"                           # Visual Studio Code
+# editor="termite -e 'nvim $FILE'"          # nvim with termite
 """
 
 
