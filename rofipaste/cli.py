@@ -113,14 +113,18 @@ def main(version: bool, edit_config: bool, edit_entry: bool,
     if edit_entry:
         filename = click.prompt('Please enter the filename',
                                 default="new_entry")
-        dirname = os.path.dirname(filename)
 
-        dirname = os.path.join(filesPath, dirname)
+        filename = os.path.join(filesPath, filename)
+
+        dirname = os.path.dirname(filename)
 
         if not os.path.isdir(dirname):
             os.makedirs(dirname)
 
-        rofipaste.edit_file(os.path.join(filesPath, filename), editor)
+        if not os.path.isfile(filename):
+            os.mknod(filename)
+
+        rofipaste.edit_file(filename, editor)
         return 0
 
     if version:

@@ -75,6 +75,10 @@ def commandInterpreter(cmd: str, editor: str) -> None:
     commands = {
         "config":
         lambda *args: edit_file(config_file_name, editor, xdg_open=True),
+        "help":
+        lambda *args: show_message(
+            "Available commands:\n - /help : Show this menu\n - /config : Open your config file in your default editor"
+        ),
     }
     if cmd[0] == command_prefix:
         args = cmd[1:].split(" ")
