@@ -86,7 +86,7 @@ def createIfNotExist(path):
               help='A string of arguments to give to rofi')
 @click.option('-e',
               '--editor',
-              default='none',
+              default='',
               help='path to your favorite editor')
 @click_config_file.configuration_option(config_file_name=config_file_name)
 def main(version: bool, edit_config: bool, edit_entry: bool,
